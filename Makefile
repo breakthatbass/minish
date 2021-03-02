@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address
-OBJ=main.o parse.o
+OBJ=src/main.o src/parse.o src/builtins.o src/minish.o
 BIN=minish
 
 all=$(BIN)
@@ -11,5 +11,9 @@ minish: $(OBJ)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+.PHONY: tests
+tests:
+	./test.sh
+
 clean:
-	$(RM) -r minish *.o *.dSYM
+	$(RM) -r minish src/*.o src/*.dSYM
