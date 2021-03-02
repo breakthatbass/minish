@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address
-OBJ=
+OBJ=main.o parse.o
 BIN=minish
 
 all=$(BIN)
