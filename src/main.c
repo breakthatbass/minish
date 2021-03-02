@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include "parse.h"
+#include "minish.h"
 
 #define RED_B "\033[31;1m"
 #define YEL_B "\033[33;1m"
@@ -11,6 +12,8 @@
 int main()
 {
     char *line;
+	 char **tokens;
+	 int n;
     
     while (1) {
         char cwd[PATH_MAX];
@@ -24,6 +27,13 @@ int main()
         }
         // take input
         line = read_cmds();
+		  tokens = split(line, " \t\r\n");
+		  if (*tokens != NULL) {
+			  n = shell_exec(tokens);
+			  printf("RETURN CODE: %d\n", n);
+		  }
+		  free(tokens);
+
     }
     return 0;
 }
