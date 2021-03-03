@@ -33,7 +33,7 @@ MU_TEST(test_check)
 
 MU_TEST(test_assert_int_eq)
 {
-   // mu_assert_int_eq(EXIT_FAILURE, c);
+   mu_assert_int_eq(EXIT_FAILURE, c);
 }
 
 
