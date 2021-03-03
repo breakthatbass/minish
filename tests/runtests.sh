@@ -8,7 +8,6 @@ NC='\033[0m' # No Color
 
 # dependency files
 test_files='../src/parse.c ../src/minish.c ../src/builtins.c'
- ../src/minish. ../src/minish.cc
 # make this script have permission to run src files
 #chmod -R 777 ../src/*.c
 
