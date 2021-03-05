@@ -24,14 +24,14 @@ int shell_exec(char **args)
 {
     int status, return_val;
     pid_t rc;
-	 int pfd[2];
+	int pfd[2];
     size_t len, i;
 
-	 // by default we assume success
-	 return_val = EXIT_SUCCESS;
+	// by default we assume success
+	return_val = EXIT_SUCCESS;
 
     // first check if command is a builtin command
-	 len = builtin_len();
+	len = builtin_len();
     for (i = 0; i < len; i++) {
         if (strcmp(args[0], builtins[i].name) == 0) {
             builtins[i].f(args);
@@ -39,27 +39,27 @@ int shell_exec(char **args)
         }
     }
 	
-	 // set up pipe between child and parent to get the return value
-	 if (pipe(pfd) < 0) {
-		 perror("pipe");
-		 exit(EXIT_FAILURE);
-	 }
+	// set up pipe between child and parent to get the return value
+	if (pipe(pfd) < 0) {
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
 
     rc = fork();
-	 if (rc < 0) {
-		 perror("fork");
-		 exit(EXIT_FAILURE);
+	if (rc < 0) {
+		perror("fork");
+		exit(EXIT_FAILURE);
 	 } else if (rc == 0) {
         execvp(args[0], args);
         // if we make it here, there was a problem with the command
         errmsg(*args);
-		  return_val = EXIT_FAILURE;
+		return_val = EXIT_FAILURE;
 
-		  // let the parent process know there was a problem
-		  close(pfd[0]);
-		  write(pfd[1], &return_val, sizeof(return_val));
-		  close(pfd[1]);
-    }
+		// let the parent process know there was a problem
+		close(pfd[0]);
+		write(pfd[1], &return_val, sizeof(return_val));
+		close(pfd[1]);
+	 }
 	 // we're in the parent and we want to wait for proc to finish
 	 waitpid(rc, &status, WUNTRACED);
 	 
