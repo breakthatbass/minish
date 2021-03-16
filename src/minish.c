@@ -49,7 +49,7 @@ int shell_exec(char **args)
 	if (rc < 0) {
 		perror("fork");
 		exit(EXIT_FAILURE);
-	 } else if (rc == 0) {
+	} else if (rc == 0) {
         execvp(args[0], args);
         // if we make it here, there was a problem with the command
         errmsg(*args);
@@ -59,15 +59,93 @@ int shell_exec(char **args)
 		close(pfd[0]);
 		write(pfd[1], &return_val, sizeof(return_val));
 		close(pfd[1]);
-	 }
-	 // we're in the parent and we want to wait for proc to finish
-	 waitpid(rc, &status, WUNTRACED);
+	}
+	// we're in the parent and we want to wait for proc to finish
+	waitpid(rc, &status, WUNTRACED);
 	 
-	 // read from the pipe, if there was a problem, we'll know
-	 close(pfd[1]);
-	 read(pfd[0], &return_val, sizeof(return_val));
-	 close(pfd[0]);
-	 //printf("RETURN VAL IN PARENT: %d\n", return_val);
+	// read from the pipe, if there was a problem, we'll know
+	close(pfd[1]);
+	read(pfd[0], &return_val, sizeof(return_val));
+	close(pfd[0]);
+	//printf("RETURN VAL IN PARENT: %d\n", return_val);
 
-	 return return_val;
+	return return_val;
 }
+
+
+// make_proc: determine if a process goes to stdout or takes in data from stdin
+void make_proc(int in, int out, char **cmd)
+{
+    pid_t rc;
+    int status;
+    rc = fork();
+    if (rc < 0) {
+        perror("fork");
+        exit(1);
+    }
+    if (rc  == 0) {
+        if (in != STDIN_FILENO) {
+            dup2(in, STDIN_FILENO);
+            close(in);
+        }
+        if (out != STDOUT_FILENO) {
+            dup2(out, STDOUT_FILENO);
+            close(out);
+        }
+        execvp(*cmd, cmd);
+        errmsg(*cmd);
+    }
+    waitpid(rc, &status, WUNTRACED);
+    return;
+}
+
+
+// pipe_exec: loop through each command, connecting each through a pipe
+void pipe_exec(char *line)
+{
+    int in, status;
+    int pipe_no; // keep track of no. of cmds seperated by pipes 
+    int pfd[2];
+    pid_t rc;
+    char **cmd, **pipe_cmds;
+    
+    // split takes a string and splits into array of strings based on delimiter
+    pipe_cmds = split(line, "|");
+
+    in = 0;
+    pipe_no = 0;
+    while (*pipe_cmds) {
+        cmd = split(*pipe_cmds, " \t\r\n");
+		if (!pipe_cmds[1]) {
+			break;
+		}
+
+        if (pipe(pfd) < 0) {
+            perror("pipe");
+        }
+
+        make_proc(in, pfd[1], cmd);
+        close(pfd[1]);
+        in = pfd[0];
+        pipe_cmds++;
+        pipe_no++;
+    }
+    // move pointer back and free
+    pipe_cmds -= pipe_no;
+    free(pipe_cmds);
+
+    rc = fork();
+    if (rc < 0) {
+        perror("fork");
+        exit(1);
+    }
+    if (rc == 0) {
+        if (in != 0) dup2(in, STDIN_FILENO);
+        execvp(*cmd, cmd);
+        errmsg(*cmd);
+        exit(1);
+    }
+    waitpid(rc, &status, WUNTRACED);
+    return;
+}
+
