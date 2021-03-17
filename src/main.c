@@ -25,15 +25,20 @@ int main()
             // if there's an issue with getcwd() just print the prompt
             printf("%sminish%s %s->%s ", RED_B, END, PURPLE_B, END);
         }
-        // take input
+        
         line = read_cmds();
-		  tokens = split(line, " \t\r\n");
-		  if (*tokens != NULL) {
-			  n = shell_exec(tokens);
-			  printf("RETURN CODE: %d\n", n);
-		  }
-		  free(tokens);
 
-    }
+		if (strstr(line, "|")) {
+			int n = pipe_exec(line);
+			if (n != 0)
+				continue;
+		} else {
+			tokens = split(line, " \t\r\n");
+			if (*tokens != NULL) {
+				n = shell_exec(tokens);
+			}
+			free(tokens);
+		}
+	}
     return 0;
 }
