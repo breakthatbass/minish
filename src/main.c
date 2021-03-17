@@ -14,7 +14,7 @@ int main()
     char *line;
 	 char **tokens;
 	 int n;
-    
+ 
     while (1) {
         char cwd[PATH_MAX];
         if (getcwd(cwd, sizeof(cwd))) {
@@ -25,20 +25,21 @@ int main()
             // if there's an issue with getcwd() just print the prompt
             printf("%sminish%s %s->%s ", RED_B, END, PURPLE_B, END);
         }
-        
+ 
         line = read_cmds();
 
 		if (strstr(line, "|")) {
-			int n = pipe_exec(line);
-			if (n != 0)
-				continue;
+			tokens = split(line, "|");
+			if (tokens != NULL) {
+				n = pipe_exec(tokens);
+			}
 		} else {
 			tokens = split(line, " \t\r\n");
 			if (*tokens != NULL) {
 				n = shell_exec(tokens);
 			}
-			free(tokens);
 		}
+		free(tokens);
 	}
     return 0;
 }
