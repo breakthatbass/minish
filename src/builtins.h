@@ -7,7 +7,7 @@
 
 void minish_cd(char **args);
 void minish_exit(char **args);
-void errmsg(char *msg);
+void errmsg(const char *msg);
 
 // this struct and builtins array prevent a big if/else chain
 // if a lot of builtin functions are added

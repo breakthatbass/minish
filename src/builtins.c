@@ -25,7 +25,7 @@ void minish_exit(char **args)
     }
 }
 
-void errmsg(char *msg)
+void errmsg(const char *msg)
 {
     char shell[15] = "minish -> ";
     char error_message[25] = "command not found -> ";

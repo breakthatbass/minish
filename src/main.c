@@ -11,7 +11,8 @@
 
 int main()
 {
-	 char line[100] = {0};
+	 //char line[100] = {0};
+	 char *line;
 	 char **tokens;
 	 int n;
  
@@ -26,8 +27,8 @@ int main()
             printf("%sminish%s %s->%s ", RED_B, END, PURPLE_B, END);
         }
  
-        //line = read_cmds();
-		strcpy(line, read_cmds());
+        line = read_cmds();
+		//strcpy(line, read_cmds());
 
 		if (strstr(line, "|")) {
 			tokens = split(line, "|");
