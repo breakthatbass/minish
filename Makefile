@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address -Wwrite-strings
+CFLAGS=-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address #-Wwrite-strings
 OBJ=src/main.o src/parse.o src/builtins.o src/minish.o
 BIN=minish
 

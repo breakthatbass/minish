@@ -11,7 +11,6 @@ struct builtin builtins[] = {
 size_t builtin_len() {return sizeof (builtins)/sizeof (struct builtin);}
 
 
-
 /***
  * shell_exec: execute a command in a child process
  *
@@ -104,6 +103,13 @@ void make_proc(int in, int out, char **cmd)
 // pipe_exec: loop through each command, connecting each through a pipe
 int pipe_exec(char **args)
 {
+    int p = 0;
+    while(*args) {
+        printf("/%s/\n", *args);
+        args++;
+        p++;
+    }
+    args -= p;
     int in, status, return_val;
     int pipe_no; // keep track of no. of cmds seperated by pipes 
     int pfd[2];
