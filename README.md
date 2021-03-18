@@ -21,3 +21,9 @@ exit
 
 ## Usage
 You use it like any other Unix shell. However, unlike most toy/project Unix shells, with `minish` you can use multiple pipes. 
+
+## ToDo
+
+1. add redirection (there is currently limited redirection...)
+2. add arrow key usage
+3. add history
