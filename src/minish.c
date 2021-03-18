@@ -94,6 +94,7 @@ void make_proc(int in, int out, char **cmd)
         }
         execvp(*cmd, cmd);
         errmsg(*cmd);
+		exit(1);
     }
     waitpid(rc, &status, WUNTRACED);
     return;
@@ -101,22 +102,24 @@ void make_proc(int in, int out, char **cmd)
 
 
 // pipe_exec: loop through each command, connecting each through a pipe
-void pipe_exec(char *line)
+int pipe_exec(char **args)
 {
-    int in, status;
+    int in, status, return_val;
     int pipe_no; // keep track of no. of cmds seperated by pipes 
     int pfd[2];
+    //int return_status[2]; // pipe to know
     pid_t rc;
-    char **cmd, **pipe_cmds;
+    char **cmd; // **pipe_cmds;
     
     // split takes a string and splits into array of strings based on delimiter
-    pipe_cmds = split(line, "|");
-
+    //pipe_cmds = split(line, "|");
+	
+	return_val = EXIT_SUCCESS;
     in = 0;
     pipe_no = 0;
-    while (*pipe_cmds) {
-        cmd = split(*pipe_cmds, " \t\r\n");
-		if (!pipe_cmds[1]) {
+    while (*args) {
+        cmd = split(*args, " \t\r\n");
+		if (!args[1]) {
 			break;
 		}
 
@@ -127,12 +130,12 @@ void pipe_exec(char *line)
         make_proc(in, pfd[1], cmd);
         close(pfd[1]);
         in = pfd[0];
-        pipe_cmds++;
+        args++;
         pipe_no++;
     }
     // move pointer back and free
-    pipe_cmds -= pipe_no;
-    free(pipe_cmds);
+    args -= pipe_no;
+    //free(args);
 
     rc = fork();
     if (rc < 0) {
@@ -143,9 +146,10 @@ void pipe_exec(char *line)
         if (in != 0) dup2(in, STDIN_FILENO);
         execvp(*cmd, cmd);
         errmsg(*cmd);
+		return_val = EXIT_FAILURE;
         exit(1);
     }
     waitpid(rc, &status, WUNTRACED);
-    return;
+    return return_val;
 }
 

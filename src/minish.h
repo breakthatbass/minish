@@ -8,7 +8,7 @@ int shell_exec(char **args);
 void make_proc(int in, int out, char **cmd);
 
 // pipe_exec: loop through each command, connecting each through a pipe
-void pipe_exec(char *line);
+int pipe_exec(char **);
 
 #endif
 

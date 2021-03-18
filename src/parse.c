@@ -14,7 +14,7 @@ char **split(char *s, const char *delim)
 {
     char **split_s;
     char *token;
-    size_t len, s_len;
+    size_t len;
     int i;
     
     len = strlen(s);
@@ -28,22 +28,14 @@ char **split(char *s, const char *delim)
     i = 0;
     token = strtok(s, delim);
     while (token != NULL) {
-        *split_s = token;
+		split_s[i] = token;
         if (**split_s == ' ' || **split_s == '\n') {
             memmove(*split_s, *(split_s)+1, strlen(*split_s));
         }
 
-        // add null terminator at end of each string
-        s_len = strlen(*split_s);
-        split_s+=s_len;
-        *split_s = 0;
-        split_s -= s_len;
-
         token = strtok(NULL, delim);
-        split_s++;
         i++;
     }
-    *split_s = NULL;
-    split_s -= i;
+	split_s[i] = NULL;
     return split_s;
 }
