@@ -9,7 +9,7 @@ char *read_cmds(void)
     return line;
 }
 
-static char *trim(char *str)
+char *trim(char *str)
 {
   char *end;
 

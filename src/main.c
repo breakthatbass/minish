@@ -28,14 +28,33 @@ int main()
         }
  
         line = read_cmds();
-		//strcpy(line, read_cmds());
 
 		if (strstr(line, "|")) {
+
+			// PIPE
 			tokens = split(line, "|");
 			if (tokens != NULL) {
 				n = pipe_exec(tokens);
 			}
+
+		} else if (strstr(line, ">")) {
+
+			// REDIRECTION OUT
+			tokens = split(line, ">");
+			if (tokens != NULL) {
+				redirect(tokens, "out");
+			}
+
+		} else if (strstr(line, "<")) {
+
+			// REDIRECTION IN
+			tokens = split(line, "<");
+			if (tokens != NULL) {
+				redirect(tokens, "in");
+			}
+
 		} else {
+
 			tokens = split(line, " \t\r\n");
 			if (*tokens != NULL) {
 				n = shell_exec(tokens);

@@ -14,4 +14,7 @@ char *read_cmds(void);
 // split: take a string and break it up into an array of strings based on delim
 char **split(char *s, const char *delim);
 
+// trim: trim leading and trailing whitespace on a string
+char *trim(char *s);
+
 #endif

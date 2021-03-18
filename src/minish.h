@@ -1,6 +1,8 @@
 #ifndef __MINISH_H__
 #define __MINISH_H__
 
+#include <fcntl.h>
+
 // shell_exec: execute a command in a child process
 int shell_exec(char **args);
 
@@ -8,7 +10,10 @@ int shell_exec(char **args);
 void make_proc(int in, int out, char **cmd);
 
 // pipe_exec: loop through each command, connecting each through a pipe
-int pipe_exec(char **);
+int pipe_exec(char **args);
+
+// redirect: redirect input and out based on "<" or ">"
+int redirect(char **args, char *std);
 
 #endif
 

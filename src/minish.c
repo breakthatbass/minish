@@ -159,3 +159,62 @@ int pipe_exec(char **args)
     return return_val;
 }
 
+/********************************
+*
+*   UNDER CONTRUCTION
+*
+***********************************/
+#define MAXFILE 7096
+int redirect(char **args, char *std)
+{
+    FILE *fp;
+    int pfd[2];
+    pid_t rc;
+    char buf[MAXFILE];
+    char *file;
+
+    file = trim(args[1]);
+    if (strstr(file, " ")) {
+        fprintf(stderr, "cannot open file: %s\n", file);
+        return EXIT_FAILURE;
+    }
+
+    char **arg1 = split(args[0], " \n\r\t");
+    
+    if (pipe(pfd) < 0) {
+        perror("pipe");
+        return EXIT_FAILURE;
+    }
+
+    int status = EXIT_SUCCESS;
+    rc = fork();
+    if (rc == 0) {
+        if (strcmp(std, "out") == 0) {
+            dup2(pfd[1], STDOUT_FILENO);
+        } else // assume "in"
+            dup2(pfd[1], STDIN_FILENO);
+		close(pfd[0]);
+        
+        execvp(arg1[0], arg1);
+		perror("exec");
+        status = EXIT_FAILURE;
+    }
+    int waitn;
+    waitpid(rc, &waitn, WUNTRACED);
+    
+    int n = read(pfd[0], buf, sizeof buf);
+    printf("%d\n", n);
+
+    close(pfd[0]);
+	close(pfd[1]);
+
+    fp = fopen(file, "w");
+    if (fp == NULL) {
+        perror("fopen");
+        return EXIT_FAILURE;
+    }
+
+    fprintf(fp, "%s\0", buf);
+    fclose(fp);
+    return status;
+}
