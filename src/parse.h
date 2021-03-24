@@ -17,4 +17,7 @@ char **split(char *s, const char *delim);
 // trim: trim leading and trailing whitespace on a string
 char *trim(char *s);
 
+// len: get the length of an array of strings
+int len(char **a);
+
 #endif

@@ -13,7 +13,7 @@ void make_proc(int in, int out, char **cmd);
 int pipe_exec(char **args);
 
 // redirect: redirect input and out based on "<" or ">"
-int redirect(char **args, char *std);
+//int redirect(char **args, char *std);
 
 #endif
 

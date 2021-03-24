@@ -161,20 +161,24 @@ int pipe_exec(char **args)
 
 /********************************
 *
-*   UNDER CONTRUCTION
+*   UNDER CONSTRUCTION
 *
 ***********************************/
+/*
 #define MAXFILE 7096
-int redirect(char **args, char *std)
+int redirect_out(char **args)
 {
     FILE *fp;
     int pfd[2];
     pid_t rc;
     char buf[MAXFILE];
     char *file;
+	char **arg1;
 
-    file = trim(args[1]);
-    if (strstr(file, " ")) {
+
+	// get the command and the file into sep variables
+    file = trim(args[1]); // trim leading and trailing whitespace
+	if (strstr(file, " ")) {
         fprintf(stderr, "cannot open file: %s\n", file);
         return EXIT_FAILURE;
     }
@@ -187,34 +191,69 @@ int redirect(char **args, char *std)
     }
 
     int status = EXIT_SUCCESS;
+
     rc = fork();
     if (rc == 0) {
         if (strcmp(std, "out") == 0) {
+			// we have a "args > file"
+			// set the stdout from args to the pipe
             dup2(pfd[1], STDOUT_FILENO);
-        } else // assume "in"
+			close(pfd[0]);
+
+            execvp(arg1[0], arg1);
+            perror("exec");
+            status = EXIT_FAILURE;
+        } else { // assume "in"
+			// we have a "args < file"
+			// set the stdin of args to come from the pipe
             dup2(pfd[1], STDIN_FILENO);
-		close(pfd[0]);
+			close(pfd[0]);
+
+            // now we just want to read the file but send the output to the pipe
+			char file_exec[20] = "cat ";
+			strcat(file_exec, file);
+			char **tmp = split(file_exec, " ");
+            execvp(tmp[0], tmp);
+            perror("exec <");
+            status = EXIT_FAILURE;
+            
+		}
         
-        execvp(arg1[0], arg1);
-		perror("exec");
-        status = EXIT_FAILURE;
     }
     int waitn;
     waitpid(rc, &waitn, WUNTRACED);
+    printf("we're about to dup\n");
     
-    int n = read(pfd[0], buf, sizeof buf);
-    printf("%d\n", n);
+	if (strcmp(std, "out") == 0) {
+		// we have ">"
+        // read from the pipe and store in buf
+		int n = read(pfd[0], buf, sizeof buf);
+		if (n < 0) {
+			perror("read");
+			exit(EXIT_FAILURE);
+		}
+		int len = strlen(buf);
+		buf[len-2] = 0;
+
+        // open a file and write buf into it
+        fp = fopen(file, "w");
+        if (fp == NULL) {
+            perror("fopen");
+            return EXIT_FAILURE;
+        }
+
+        fprintf(fp, "%s\n", buf);
+        fclose(fp);
+
+
+	} else { 
+        // again, assume "in"
+		 printf("here\n");
+	}
 
     close(pfd[0]);
 	close(pfd[1]);
 
-    fp = fopen(file, "w");
-    if (fp == NULL) {
-        perror("fopen");
-        return EXIT_FAILURE;
-    }
-
-    fprintf(fp, "%s\0", buf);
-    fclose(fp);
+    
     return status;
-}
+} */

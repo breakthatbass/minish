@@ -55,3 +55,15 @@ char **split(char *s, const char *delim)
 	split_s[i] = NULL;
     return split_s;
 }
+
+// len: get the length of an array of strings
+int len(char **a)
+{
+	int count = 0;
+	while (*a) {
+		a++;
+		count++;
+	}
+	a-=count;
+	return count;
+}

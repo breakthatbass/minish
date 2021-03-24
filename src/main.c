@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include "parse.h"
 #include "minish.h"
+#include "redirect.h"
 
 #define RED_B "\033[31;1m"
 #define YEL_B "\033[33;1m"
@@ -42,7 +43,8 @@ int main()
 			// REDIRECTION OUT
 			tokens = split(line, ">");
 			if (tokens != NULL) {
-				redirect(tokens, "out");
+				printf("WE'RE GOING OUT\n");
+				redirect_out(tokens);
 			}
 
 		} else if (strstr(line, "<")) {
@@ -50,7 +52,8 @@ int main()
 			// REDIRECTION IN
 			tokens = split(line, "<");
 			if (tokens != NULL) {
-				redirect(tokens, "in");
+				printf("WE'RE GOING IN\n");
+				redirect_in(tokens);
 			}
 
 		} else {

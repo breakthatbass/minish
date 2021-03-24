@@ -3,4 +3,6 @@
 
 void redirect_in(char **tokens);
 
+void redirect_out(char **tokens);
+
 #endif
