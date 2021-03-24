@@ -16,4 +16,4 @@ tests:
 	./test.sh
 
 clean:
-	$(RM) -r minish *.o *.dSYM
+	$(RM) -r minish src/*.o src/*.dSYM
