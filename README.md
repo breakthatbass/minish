@@ -25,5 +25,6 @@ You use it like any other Unix shell. However, unlike most toy/project Unix shel
 ## ToDo
 
 1. add redirection (there is currently limited redirection...)
-2. add arrow key usage
-3. add history
+2. change exit function to read all zombie processes
+3. add arrow key usage
+4. add history
