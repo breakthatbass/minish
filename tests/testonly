@@ -5,9 +5,8 @@
 # usage: ./testonly file_to_test.c
 # this will just produce an a.out file
 
+src_files='../src/parse.c ../src/minish.c ../src/builtins.c ../src/redirect.c'
 
-
-src_files='src/parse.c src/minish.c src/builtins.c src/redirect.c'
 cflags='-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address'
 
 if [ "$#" -ne 1 ]; then
