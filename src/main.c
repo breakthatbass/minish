@@ -14,7 +14,8 @@ int main()
 {
 	char *line;
 	char **tokens;
-	int n;
+	int n, pstat;
+	pid_t pid;
  
     while (1) {
         char cwd[PATH_MAX];
@@ -26,11 +27,20 @@ int main()
             // if there's an issue with getcwd() just print the prompt
             printf("%sminish%s %s->%s ", RED_B, END, PURPLE_B, END);
         }
+
+		// eat up zombie processes
+		while ((pid = waitpid(WAIT_ANY, &pstat, WNOHANG)) > 0);
  
+		// just make sure input is empty if it happens to not be
+		if (line != NULL) {
+			(void)memset(line, '\0', strlen(line));
+			//free(line);
+		}
+
         line = read_cmds();
+		if (line == NULL) return EXIT_FAILURE;
 
 		// for now we can't both pipes and redirection together...maybe someday
-		
 		if (strstr(line, "|") && (strstr(line, ">") || strstr(line, "<"))) {
 			fprintf(stderr, "error: minish cannot use pipes and redirection in the same command...but maybe someday\n");
 			continue;
@@ -66,11 +76,12 @@ int main()
 		} else {
 			// REGULAR COMMAND
 			tokens = split(line, " \t\r\n");
+			printf("in main: /%s/\n", *tokens);
 			if (*tokens != NULL) {
 				n = shell_exec(tokens);
 			}
 		}
 		free(tokens);
-	}
+	} // end of while loop
     return 0;
 }
