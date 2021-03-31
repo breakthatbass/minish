@@ -18,11 +18,9 @@ void minish_exit(char **args)
     write(STDOUT_FILENO, "\x1b[2J", 4);
     write(STDOUT_FILENO, "\x1b[H", 3);
 
-    // sometimes exiting requires typing "exit" multiple times
-    // I dont know why it happens but this prevents that
-    while (1) {
-        exit(EXIT_SUCCESS);
-    }
+	exit(EXIT_SUCCESS);
+	// if we make it here then there are more processess
+	exit(EXIT_SUCCESS);
 }
 
 void errmsg(const char *msg)
