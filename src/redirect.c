@@ -81,6 +81,7 @@ void redirect_in(char **tokens)
 
 	free(cmd);
 	free(file_arr);
+
 }
 
 
@@ -90,7 +91,7 @@ void redirect_in(char **tokens)
 // too much kernal memory is being used by the buffers.
 #define MAXFILE 65336
 
-void redirect_out(char **tokens)
+int redirect_out(char **tokens)
 {
 
 	int pfd[2];	// pipe
@@ -99,8 +100,8 @@ void redirect_out(char **tokens)
 	FILE *fp;
 
 	if (len(tokens) != 2) {
-		return;
-		// return EXIT_FAILURE;
+		//return;
+		return EXIT_FAILURE;
 	}
 
 	char *file = trim(tokens[1]);
@@ -143,5 +144,7 @@ void redirect_out(char **tokens)
 
 	fprintf(fp, "%s", buf);
 	fclose(fp);
+
+	return EXIT_SUCCESS;
 }
 
