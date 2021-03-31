@@ -34,12 +34,12 @@ char **split(char *s, const char *delim)
 {
     char **split_s;
     char *token;
-    size_t len;
+    size_t length;
     int i;
     
-    len = strlen(s);
+    length = strlen(s);
     
-    split_s = calloc(len*2, sizeof(char*));
+    split_s = calloc(length*2, sizeof(char*));
     if (split_s == NULL) {
         fprintf(stderr, "split: could not allocate memory\n");
         exit(EXIT_FAILURE);
@@ -67,3 +67,4 @@ int len(char **a)
 	a-=count;
 	return count;
 }
+
