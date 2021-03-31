@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# this script is to run only one test file to make debugging easier
+#
+# usage: ./testonly file_to_test.c
+# this will just produce an a.out file
+
+
+
+src_files='src/parse.c src/minish.c src/builtins.c src/redirect.c'
+cflags='-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address'
+
+if [ "$#" -ne 1 ]; then
+	echo "must provide a test file to compile"
+	echo "usage: ./testonly file_to_test.c"
+	exit 1
+fi
+
+gcc $1 $src_files $cflags
