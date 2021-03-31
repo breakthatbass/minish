@@ -1,16 +1,19 @@
 # minish
 ### An ultra-minimal shell with pipes
-***a work in progress***
 
 ## Download
 ```
 git clone https://github.com/breakthatbass/minish.git
 ```
 
+## Build
+```
+make
+```
+
 ## Run
 ```
-cd minish
-make
+cd dist
 ./minish
 ```
 
@@ -19,12 +22,16 @@ make
 exit
 ```
 
+## Run Tests
+```
+make tests
+```
+
 ## Usage
 You use it like any other Unix shell. However, unlike most toy/project Unix shells, with `minish` you can use multiple pipes. 
 
 ## ToDo
 
-1. add redirection (there is currently limited redirection...)
-2. change exit function to reap all zombie processes
-3. add arrow key usage
-4. add history
+1. make all tests pass and fix all memory leaks
+2. add arrow key usage
+3. add history
