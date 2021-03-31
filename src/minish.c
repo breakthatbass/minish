@@ -33,7 +33,6 @@ int shell_exec(char **args)
 	len = builtin_len();
     for (i = 0; i < len; i++) {
         if (strcmp(args[0], builtins[i].name) == 0) {
-			printf("/%s/\n", args[0]);
             builtins[i].f(args);
             return return_val;
         }
@@ -113,7 +112,7 @@ int pipe_exec(char **args)
     in = 0;
     pipe_no = 0;
     while (*args) {
-        cmd = split(*args, " \t\r\n");
+        cmd = split(*args, "\t\r\n ");
 		if (!args[1]) {
 			break;
 		}

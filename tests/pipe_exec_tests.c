@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static char *args1[20] = {"ls ", " wc"};
+static char *args1[20] = {"ls", "wc"};
 static char *args2[20] = {"ls -a", "wc -l"};
 
 static int a = 0;

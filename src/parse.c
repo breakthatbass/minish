@@ -12,7 +12,14 @@ char *read_cmds(void)
 char *trim(char *str)
 {
   char *end;
+  /*
+  size_t length;
 
+  length = strlen(str);
+  if (str[length-1] && str[0])
+	  // no white spaces
+	  return str;
+*/
   // Trim leading space
   while(isspace((unsigned char)*str)) str++;
 
@@ -21,6 +28,7 @@ char *trim(char *str)
 
   // Trim trailing space
   end = str + strlen(str) - 1;
+  if (*end != ' ') return str;
   while(end > str && isspace((unsigned char)*end)) end--;
 
   // Write new null terminator character
@@ -52,7 +60,7 @@ char **split(char *s, const char *delim)
         token = strtok(NULL, delim);
         i++;
     }
-	split_s[i] = NULL;
+	if (i > 0)split_s[i] = NULL;
     return split_s;
 }
 
