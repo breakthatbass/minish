@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-g -Wall -Werror -W -Wextra -pedantic -fsanitize=address
+CFLAGS=-ggdb3 -Wall -Werror -W -Wextra -pedantic -fsanitize=address
 DIST=dist
 OBJ=obj
 SRC=src
