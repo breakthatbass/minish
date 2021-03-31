@@ -12,10 +12,9 @@
 
 int main()
 {
-	 //char line[100] = {0};
-	 char *line;
-	 char **tokens;
-	 int n;
+	char *line;
+	char **tokens;
+	int n;
  
     while (1) {
         char cwd[PATH_MAX];
@@ -30,12 +29,20 @@ int main()
  
         line = read_cmds();
 
+		// for now we can't both pipes and redirection together...maybe someday
+		
+		if (strstr(line, "|") && (strstr(line, ">") || strstr(line, "<"))) {
+			fprintf(stderr, "error: minish cannot use pipes and redirection in the same command...but maybe someday\n");
+			continue;
+		}
+
 		if (strstr(line, "|")) {
 
 			// PIPE
 			tokens = split(line, "|");
 			if (tokens != NULL) {
 				n = pipe_exec(tokens);
+				if (n == 1) exit(1);
 			}
 
 		} else if (strstr(line, ">")) {
@@ -57,7 +64,7 @@ int main()
 			}
 
 		} else {
-
+			// REGULAR COMMAND
 			tokens = split(line, " \t\r\n");
 			if (*tokens != NULL) {
 				n = shell_exec(tokens);
