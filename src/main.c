@@ -34,7 +34,6 @@ int main()
 		// just make sure input is empty if it happens to not be
 		if (line != NULL) {
 			(void)memset(line, '\0', strlen(line));
-			//free(line);
 		}
 
         line = read_cmds();
@@ -60,7 +59,6 @@ int main()
 			// REDIRECTION OUT
 			tokens = split(line, ">");
 			if (tokens != NULL) {
-				printf("WE'RE GOING OUT\n");
 				redirect_out(tokens);
 			}
 
@@ -69,14 +67,12 @@ int main()
 			// REDIRECTION IN
 			tokens = split(line, "<");
 			if (tokens != NULL) {
-				printf("WE'RE GOING IN\n");
 				redirect_in(tokens);
 			}
 
 		} else {
 			// REGULAR COMMAND
 			tokens = split(line, " \t\r\n");
-			printf("in main: /%s/\n", *tokens);
 			if (*tokens != NULL) {
 				n = shell_exec(tokens);
 			}
