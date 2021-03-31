@@ -66,7 +66,6 @@ int shell_exec(char **args)
 	close(pfd[1]);
 	read(pfd[0], &return_val, sizeof(return_val));
 	close(pfd[0]);
-	//printf("RETURN VAL IN PARENT: %d\n", return_val);
 
 	return return_val;
 }
@@ -103,17 +102,9 @@ void make_proc(int in, int out, char **cmd)
 // pipe_exec: loop through each command, connecting each through a pipe
 int pipe_exec(char **args)
 {
-    int p = 0;
-    while(*args) {
-        printf("/%s/\n", *args);
-        args++;
-        p++;
-    }
-    args -= p;
     int in, status, return_val;
     int pipe_no; // keep track of no. of cmds seperated by pipes 
     int pfd[2];
-    //int return_status[2]; // pipe to know
     pid_t rc;
     char **cmd; // **pipe_cmds;
     	
@@ -152,6 +143,7 @@ int pipe_exec(char **args)
         exit(1);
     }
     waitpid(rc, &status, WUNTRACED);
+	free(cmd); // small mem leak here in linux
     return return_val;
 }
 
