@@ -33,6 +33,7 @@ int shell_exec(char **args)
 	len = builtin_len();
     for (i = 0; i < len; i++) {
         if (strcmp(args[0], builtins[i].name) == 0) {
+			printf("/%s/\n", args[0]);
             builtins[i].f(args);
             return return_val;
         }
