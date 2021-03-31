@@ -2,6 +2,7 @@
 #define __MINISH_H__
 
 #include <fcntl.h>
+#include <sys/wait.h>
 
 // shell_exec: execute a command in a child process
 int shell_exec(char **args);
