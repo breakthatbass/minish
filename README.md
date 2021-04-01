@@ -1,5 +1,6 @@
 # minish
-### An ultra-minimal shell with pipes
+### A minimal shell with pipes
+<div style="text-align:center"><img src="shell.webp" /></div>
 
 ## Download
 ```
@@ -32,6 +33,6 @@ You use it like any other Unix shell. However, unlike most toy/project Unix shel
 
 ## ToDo
 
-1. make all tests pass and fix all memory leaks
+1. add tests for redirection functions
 2. add arrow key usage
 3. add history
