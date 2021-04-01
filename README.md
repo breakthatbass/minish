@@ -1,6 +1,6 @@
 # minish
 ### A minimal shell with pipes
-<div style="text-align:center"><img src="shell.webp" /></div>
+<div style="text-align:center"><img src="shell.webp" style="width: 100px; height: 100px;"/></div>
 
 ## Download
 ```
