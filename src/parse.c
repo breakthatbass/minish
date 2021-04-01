@@ -44,9 +44,9 @@ char **split(char *s, const char *delim)
     char *token;
     size_t length;
     int i;
-    
+
     length = strlen(s);
-    
+
     split_s = calloc(length*2, sizeof(char*));
     if (split_s == NULL) {
         fprintf(stderr, "split: could not allocate memory\n");

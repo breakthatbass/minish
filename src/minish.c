@@ -140,7 +140,7 @@ int pipe_exec(char **args)
         execvp(*cmd, cmd);
         errmsg(*cmd);
 		return_val = EXIT_FAILURE;
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     waitpid(rc, &status, WUNTRACED);
 	free(cmd); // small mem leak here in linux

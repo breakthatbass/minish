@@ -389,3 +389,4 @@ static double mu_timer_cpu(void)
 #endif
 
 #endif /* MINUNIT_MINUNIT_H */
+

@@ -22,6 +22,9 @@ void redirect_in(char **tokens)
 	// will have something like
 	// {"python test.py", "file"}
 	char *file = trim(tokens[1]);
+	int file_len = strlen(file);
+	if (file[file_len-1] == '\n')
+		file[file_len-1] = '\0';
 	char **cmd = split(tokens[0], " ");
 
 	// we need to file to be within an array for exec to work
@@ -93,6 +96,13 @@ void redirect_in(char **tokens)
 
 int redirect_out(char **tokens)
 {
+	int i = 0;
+	while (*tokens) {
+		printf("/%s/\n", *tokens);
+		tokens++;
+		i++;
+	}
+	tokens-=i;
 
 	int pfd[2];	// pipe
 	pid_t pid;
@@ -105,6 +115,9 @@ int redirect_out(char **tokens)
 	}
 
 	char *file = trim(tokens[1]);
+	int file_end = strlen(file);
+	if (file[file_end-1] == '\n')
+		file[file_end-1] = '\0';
 	char **cmd = split(tokens[0], " ");
 
 	if (pipe(pfd) < 0) {
